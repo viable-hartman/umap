@@ -4,6 +4,7 @@ from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.decorators.cache import (cache_control, cache_page,
                                            never_cache)
@@ -59,6 +60,11 @@ i18n_urls += decorated_patterns(
     url(r'^map/create/$', views.MapCreate.as_view(), name='map_create'),
 )
 i18n_urls += decorated_patterns(
+    [login_required],
+    url(r'^map/(?P<map_id>[\d]+)/star/$', views.MapStar.as_view(),
+        name='map_star'),
+)
+i18n_urls += decorated_patterns(
     [map_permissions_check, never_cache],
     url(r'^map/(?P<map_id>[\d]+)/update/settings/$', views.MapUpdate.as_view(),
         name='map_update'),
@@ -84,6 +90,7 @@ urlpatterns += i18n_patterns(
     url(r'^search/$', views.search, name="search"),
     url(r'^about/$', views.about, name="about"),
     url(r'^user/(?P<username>[-_\w@]+)/$', views.user_maps, name='user_maps'),
+    url(r'^user/(?P<username>[-_\w@]+)/stars/$', views.user_stars, name='user_stars'),
     url(r'', include(i18n_urls)),
 )
 

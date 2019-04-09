@@ -78,6 +78,12 @@ a.umap-control-less {
 .leaflet-control-locate a {
     background-position: -2px -122px;
 }
+.leaflet-control-star a {
+    background-position: -122px -162px;
+}
+.leaflet-control-star.starred a {
+    background-position: -82px -162px;
+}
 .leaflet-control-search a {
     background-position: -41px -121px;
     display: block;

@@ -772,6 +772,7 @@ L.U.FormBuilder = L.FormBuilder.extend({
         tilelayersControl: {handler: 'ControlChoice', label: L._('Display the tile layers control')},
         editinosmControl: {handler: 'ControlChoice', label: L._('Display the control to open OpenStreetMap editor')},
         datalayersControl: {handler: 'DataLayersControl', label: L._('Display the data layers control')},
+        starControl: {handler: 'ControlChoice', label: L._('Display the star map button')},
     },
 
     initialize: function (obj, fields, options) {

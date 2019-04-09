@@ -847,6 +847,31 @@ L.U.LocateControl = L.Control.extend({
     }
 });
 
+L.U.StarControl = L.Control.extend({
+
+    options: {
+        position: 'topleft'
+    },
+
+    onAdd: function (map) {
+        var status = map.options.starred ? ' starred' : '';
+        var container = L.DomUtil.create('div', 'leaflet-control-star umap-control' + status),
+            link = L.DomUtil.create('a', '', container);
+        link.href = '#';
+        link.title = L._('Star this map');
+        var fn = function () {
+            map.star()
+        };
+
+        L.DomEvent
+            .on(link, 'click', L.DomEvent.stop)
+            .on(link, 'click', fn, map)
+            .on(link, 'dblclick', L.DomEvent.stopPropagation);
+
+        return container;
+    }
+});
+
 
 L.U.Search = L.PhotonSearch.extend({
 

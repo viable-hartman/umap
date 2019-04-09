@@ -4,7 +4,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from umap.models import DataLayer, Map
+from umap.models import DataLayer, Map, Star
 
 from .base import login_required
 
@@ -514,3 +514,21 @@ def test_create_readonly(client, user, post_data, settings):
     response = client.post(url, post_data)
     assert response.status_code == 403
     assert response.content == b'Site is readonly for maintenance'
+
+
+def test_authenticated_user_can_star_map(client, map, user):
+    url = reverse('map_star', args=(map.pk,))
+    client.login(username=user.username, password="123123")
+    assert Star.objects.filter(by=user).count() == 0
+    response = client.post(url)
+    assert response.status_code == 200
+    assert Star.objects.filter(by=user).count() == 1
+
+
+def test_anonymous_cannot_star_map(client, map):
+    url = reverse('map_star', args=(map.pk,))
+    assert Star.objects.count() == 0
+    response = client.post(url)
+    assert response.status_code == 302
+    assert "login" in response["Location"]
+    assert Star.objects.count() == 0
